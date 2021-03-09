@@ -62,25 +62,25 @@ function App() {
               </Card>
               <Emoji>➡️</Emoji>
               <Card priceChange={changeDirection}>
-              <Column>
+                <Column>
                   <h1>{new Intl.DateTimeFormat('en-US', dateOptions).format(today)}</h1>
                   <h2>Today's Price: ${formatNumber(todaysPrice)}</h2>
-              </Column>
+                </Column>
               </Card>
           </Centered>
           <Centered margin>
                   <Card priceChange={changeDirection}>
-                  <Column>
+                    <Column>
                       <h1>Price Change</h1>
                       <h2>${formatNumber(priceDifference.toFixed(2))}</h2>
-                  </Column>
+                    </Column>
                   </Card>
               <Emoji>{changeDirection ? '📈' : '📉' }</Emoji>
               <Card priceChange={changeDirection}>
-                  <Column>
+                    <Column>
                       <h1>Percent Change</h1>
                       <h2>{formatNumber(priceChange.toFixed(2))}%</h2>
-                  </Column>
+                    </Column>
                   </Card>
           </Centered>
           <br/>
