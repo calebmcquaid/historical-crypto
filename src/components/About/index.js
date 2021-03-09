@@ -22,7 +22,7 @@ const About = () => {
         loadTodaysData()
         loadLastYearsData()
         determineDirection(priceDifference)
-    },[])
+    },[]) // eslint-disable-line react-hooks/exhaustive-deps
   
     const loadTodaysData = async () => {
         const url = `https://min-api.cryptocompare.com/data/pricehistorical?fsym=BTC&tsyms=USD&ts=${currentTimestamp}&api_key=aabf0687e39a9fb5b6f2354fd350089a4c61f7ce0789eb488fb715a7d89177d7`
