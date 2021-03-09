@@ -7,6 +7,8 @@ import './App.css'
 import GlobalStyle from './GlobalStyle'
 
 function App() {
+
+  const API_KEY = process.env.REACT_APP_API_KEY;
   const today = new Date()
   const yearAgo = new Date().setFullYear(today.getFullYear() - 1)
   const currentTimestamp = moment().startOf('day').format('X')
@@ -30,14 +32,14 @@ function App() {
   },[]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const loadTodaysData = async () => {
-      const url = `https://min-api.cryptocompare.com/data/pricehistorical?fsym=BTC&tsyms=USD&ts=${currentTimestamp}&api_key=aabf0687e39a9fb5b6f2354fd350089a4c61f7ce0789eb488fb715a7d89177d7`
+      const url = `https://min-api.cryptocompare.com/data/pricehistorical?fsym=BTC&tsyms=USD&ts=${currentTimestamp}&api_key=${API_KEY}`
       const response = await fetch(url)
       const data = await response.json()
       setTodaysPrice(data.BTC.USD)
   }
 
   const loadLastYearsData = async () => {
-      const url = `https://min-api.cryptocompare.com/data/pricehistorical?fsym=BTC&tsyms=USD&ts=${yearAgoTimestamp}&api_key=aabf0687e39a9fb5b6f2354fd350089a4c61f7ce0789eb488fb715a7d89177d7`
+      const url = `https://min-api.cryptocompare.com/data/pricehistorical?fsym=BTC&tsyms=USD&ts=${yearAgoTimestamp}&api_key=${API_KEY}`
       const response = await fetch(url)
       const data = await response.json()
       setLastYearsPrice(data.BTC.USD)
@@ -70,7 +72,6 @@ function App() {
                   <Card priceChange={changeDirection}>
                   <Column>
                       <h1>Price Change</h1>
-                      {console.log(changeDirection)}
                       <h2>${formatNumber(priceDifference.toFixed(2))}</h2>
                   </Column>
                   </Card>

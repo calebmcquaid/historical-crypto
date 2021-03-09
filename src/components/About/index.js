@@ -6,6 +6,9 @@ import moment from 'moment'
 import GlobalStyle from '../../GlobalStyle'
 
 const About = () => {
+
+    const API_KEY = process.env.REACT_APP_API_KEY
+
     const currentTimestamp = moment().startOf('day').format('X')
     const yearAgoTimestamp = moment().subtract(1, 'years').startOf('day').format('X')
   
@@ -25,14 +28,14 @@ const About = () => {
     },[]) // eslint-disable-line react-hooks/exhaustive-deps
   
     const loadTodaysData = async () => {
-        const url = `https://min-api.cryptocompare.com/data/pricehistorical?fsym=BTC&tsyms=USD&ts=${currentTimestamp}&api_key=aabf0687e39a9fb5b6f2354fd350089a4c61f7ce0789eb488fb715a7d89177d7`
+        const url = `https://min-api.cryptocompare.com/data/pricehistorical?fsym=BTC&tsyms=USD&ts=${currentTimestamp}&api_key=${API_KEY}`
         const response = await fetch(url)
         const data = await response.json()
         setTodaysPrice(data.BTC.USD)
     }
   
     const loadLastYearsData = async () => {
-        const url = `https://min-api.cryptocompare.com/data/pricehistorical?fsym=BTC&tsyms=USD&ts=${yearAgoTimestamp}&api_key=aabf0687e39a9fb5b6f2354fd350089a4c61f7ce0789eb488fb715a7d89177d7`
+        const url = `https://min-api.cryptocompare.com/data/pricehistorical?fsym=BTC&tsyms=USD&ts=${yearAgoTimestamp}&api_key=${API_KEY}`
         const response = await fetch(url)
         const data = await response.json()
         setLastYearsPrice(data.BTC.USD)
