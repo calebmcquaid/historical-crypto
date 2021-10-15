@@ -16,6 +16,8 @@ function App() {
   const dateOptions = {year: 'numeric', month: 'long', day: 'numeric'}
 
   const [todaysPrice, setTodaysPrice] = useState('')
+  const [symbol, setSymbol] = useState('BTC')
+  const [holdingSymbol, setHoldingSymbol] = useState('')
   const [lastYearsPrice, setLastYearsPrice] = useState('')
   const [changeDirection, setChangeDirection] = useState('')
   const priceDifference = todaysPrice - lastYearsPrice
@@ -26,33 +28,52 @@ function App() {
   }
 
   useEffect(() => {
-      loadTodaysData()
-      loadLastYearsData()
+      loadTodaysData(symbol)
+      loadLastYearsData(symbol)
       determineDirection(priceDifference)
   },[]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const loadTodaysData = async () => {
-      const url = `https://min-api.cryptocompare.com/data/pricehistorical?fsym=BTC&tsyms=USD&ts=${currentTimestamp}&api_key=${API_KEY}`
+    if(!symbol) {
+      setSymbol('BTC')
+    }
+      const url = `https://min-api.cryptocompare.com/data/pricehistorical?fsym=${symbol}&tsyms=USD&ts=${currentTimestamp}&api_key=${API_KEY}`
       const response = await fetch(url)
       const data = await response.json()
-      setTodaysPrice(data.BTC.USD)
+      setTodaysPrice(data[symbol].USD)
   }
 
   const loadLastYearsData = async () => {
-      const url = `https://min-api.cryptocompare.com/data/pricehistorical?fsym=BTC&tsyms=USD&ts=${yearAgoTimestamp}&api_key=${API_KEY}`
+      if(!symbol) {
+        setSymbol('BTC')
+      }
+      console.log({symbol})
+      const url = `https://min-api.cryptocompare.com/data/pricehistorical?fsym=${symbol}&tsyms=USD&ts=${yearAgoTimestamp}&api_key=${API_KEY}`
       const response = await fetch(url)
       const data = await response.json()
-      setLastYearsPrice(data.BTC.USD)
+      setLastYearsPrice(data[symbol].USD)
   }
 
   const formatNumber = (number) => {
       return new Intl.NumberFormat().format(number)
   }
 
+  const handleSubmit = (e) => {
+    console.log({symbol})
+    e.preventDefault()
+    loadTodaysData(symbol)
+    loadLastYearsData(symbol)
+    determineDirection(priceDifference)
+  }
+
   return(
       <div>
         <GlobalStyle priceChange={changeDirection}/>
         <Header/>
+        <div style={{display: 'flex', justifyContent: 'center'}}>
+          <input value={symbol} onChange={(e) => setSymbol(e.target.value)} />
+          <input type="button" onClick={handleSubmit} value="Submit"/>
+        </div>
           <Centered>
               <Card priceChange={changeDirection}>
                   <Column>
